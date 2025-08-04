@@ -1,0 +1,58 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:eventdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: HelloWorld
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: update
+    defer-datasource-initialization: true
+
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            enable: false
+          connectiontimeout: ${CONNECTION_TIMEOUT}
+          timeout: ${READ_TIMEOUT}
+          writetimeout: ${WRITE_TIMEOUT}
+
+
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration: ${JWT_EXPIRATION_IN_MS}
+    refresh-token-expiration: ${JWT_REFRESH_EXPIRATION_IN_MS}
+    issuer: ${JWT_ISSUER}
+  base-url: ${BASE_URL}
+  email:
+    from: no-reply@eventapp.com
+
+logging:
+  level:
+    com.merbsconnect: debug
+
+# Enhanced Management and Monitoring Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /actuator
+      cors:
+        allowed-origins: "*"
+        allowed-methods: "GET,POST"
+        allowed-headers: "*"
