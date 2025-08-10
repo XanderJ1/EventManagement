@@ -1,5 +1,6 @@
 package com.bash.Event.ticketing.event.service.impl;
 
+import com.bash.Event.ticketing.Exceptions.EventNotFoundException;
 import com.bash.Event.ticketing.event.dto.request.EventRequest;
 import com.bash.Event.ticketing.event.dto.response.EventResponse;
 import com.bash.Event.ticketing.event.dto.response.MessageResponse;
@@ -69,7 +70,7 @@ public class EventServiceImpl implements EventService {
         eventOwnershipService.validateEventOwnership(eventId, userEmail);
         
         Event existingEvent = eventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found with ID: " + eventId));
+                .orElseThrow(() -> new EventNotFoundException("Event not found with ID: " + eventId));
 
         Event updatedEvent = eventMapper.mapToEvent(eventRequest);
 
@@ -103,7 +104,7 @@ public class EventServiceImpl implements EventService {
     public MessageResponse<EventResponse> getEventById(UUID eventId) {
         log.info("Retrieving event with ID: {}", eventId);
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found with ID: " + eventId));
+                .orElseThrow(() -> new EventNotFoundException("Event not found with ID: " + eventId));
         EventResponse eventResponse = eventMapper.mapToEventResponse(event);
         log.info("Event retrieved successfully: {}", eventResponse);
         return MessageResponse.success("Event Retrieved Successfully", eventResponse);
@@ -120,7 +121,7 @@ public class EventServiceImpl implements EventService {
         eventOwnershipService.validateEventOwnership(eventId, userEmail);
         
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found with ID: " + eventId));
+                .orElseThrow(() -> new EventNotFoundException("Event not found with ID: " + eventId));
         
         eventRepository.delete(event);
         log.info("Event deleted successfully by user {}: {}", userEmail, eventId);

@@ -3,6 +3,7 @@ package com.bash.Event.ticketing.authentication.service.impl;
 
 import com.bash.Event.ticketing.Exceptions.InvalidTokenException;
 import com.bash.Event.ticketing.Exceptions.TokenExpiredException;
+import com.bash.Event.ticketing.Exceptions.TokenRefreshException;
 import com.bash.Event.ticketing.authentication.domain.RefreshToken;
 import com.bash.Event.ticketing.authentication.domain.User;
 import com.bash.Event.ticketing.authentication.domain.UserRole;
@@ -53,7 +54,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return new MessageResponse("User already exists with this email");
         }
 
-
         // Check if the phone number already exists
         if (userRepository.existsByPhoneNumber(request.getPhoneNumber())) {
             return new MessageResponse("User already exists with this phone number");
@@ -86,14 +86,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public JwtResponse authenticateUser(LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-
-
         log.info("I am done authenticating the user");
 
         if (authentication == null) {
             throw new UsernameNotFoundException("User not found with email/username: " + loginRequest.getEmail());
         }
-
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -187,7 +184,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                             .build();
                 }).orElseThrow(() -> {
                     log.error("Refresh token is not in database!");
-                    return new RuntimeException("Refresh token is not in the database!");
+                    return new TokenRefreshException(request.toString(), "Refresh token is not in the database!");
                 });
     }
 

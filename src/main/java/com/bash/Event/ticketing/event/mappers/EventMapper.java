@@ -4,6 +4,7 @@ import com.bash.Event.ticketing.event.dto.request.EventRequest;
 import com.bash.Event.ticketing.event.dto.response.EventResponse;
 import com.bash.Event.ticketing.event.model.Address;
 import com.bash.Event.ticketing.event.model.Event;
+import lombok.Builder;
 import org.springframework.stereotype.Component;
 
 @Component

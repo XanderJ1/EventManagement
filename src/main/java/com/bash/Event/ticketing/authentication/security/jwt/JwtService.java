@@ -51,7 +51,6 @@ public class                                                                    
     public String generateToken(Authentication authentication){
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
-
         Map<String, Object> claims = new HashMap<>();
 
         claims.put("purpose" ,"authentication");
