@@ -34,8 +34,8 @@ spring:
 app:
   jwt:
     secret: ${JWT_SECRET}
-    expiration: ${JWT_EXPIRATION_IN_MS}
-    refresh-token-expiration: ${JWT_REFRESH_EXPIRATION_IN_MS}
+    expiration: ${JWT_EXPIRATION_MS}
+    refresh-token-expiration: ${JWT_REFRESH_EXPIRATION_MS}
     issuer: ${JWT_ISSUER}
   base-url: ${BASE_URL}
   email:
